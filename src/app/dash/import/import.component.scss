@@ -1,0 +1,59 @@
+@import "src/variables";
+
+.card {
+  .card-header {
+    padding: 0;
+
+    p {
+      display: flex;
+      height: 72px;
+      overflow: hidden;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 1;
+      user-select: none;
+      cursor: pointer;
+      color: $secondary;
+
+      span {
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: $secondary;
+        color: white;
+      }
+
+      &.active {
+        color: $white;
+
+        span {
+          background: $primary;
+          color: white;
+        }
+      }
+
+      &:hover {
+        background: rgb(0, 0, 0, 0.06);
+      }
+
+      &:active {
+        background: rgb(0, 0, 0, 0.12);
+      }
+    }
+
+    .line {
+      border-top-width: 1px;
+      border-top-style: solid;
+      flex: auto;
+      height: 0;
+      margin: 0 -16px;
+      min-width: 32px;
+      color: rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}

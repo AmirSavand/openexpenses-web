@@ -1,0 +1,117 @@
+<div class="container py-5">
+  <div class="card bg-light">
+    <div class="card-header d-flex align-items-center justify-content-around">
+      <!-- Header 1 -->
+      <p class="mb-0 active" (click)="step = 1">
+        <span class="badge">1</span> Select file
+      </p>
+
+      <!-- Line -->
+      <div class="line"></div>
+
+      <!-- Header 2 -->
+      <p class="mb-0" (click)="step = 2">
+        <span class="badge">2</span> Map Fields
+      </p>
+    </div>
+    <div class="card-body">
+      <!-- First step -->
+      <ng-template [ngIf]="step === 1">
+        <h1>Select file</h1>
+        <p>To import expenses, you need to provide the data in a CSV file format.</p>
+
+        <label for="fileInput">CSV Source File *</label>
+        <!-- Input -->
+        <input type="file" id="fileInput" accept=".csv" #fileElement style="display: none" (change)="onFileSelected()"
+               required>
+        <!-- Selected file's information -->
+        <div *ngIf="file">
+          {{ file.name }}
+        </div>
+        <!-- Select button -->
+        <div *ngIf="!file">
+          <button class="btn btn-primary" (click)="fileElement.click()">Choose File</button>
+        </div>
+      </ng-template>
+
+      <!-- Step 2 -->
+      <ng-template [ngIf]="step === 2">
+        <h1>Map Fields</h1>
+        <p>Select the CSV fields to import, then set how you would like these converted to fields in
+          Expensephere.</p>
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">CSV Field</th>
+            <th scope="col">
+              <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+            </th>
+            <th scope="col">Expensephere Field</th>
+            <th scope="col">Auto Map</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of dataSource">
+            <th scope="row">
+              <div>{{ data.name }}</div>
+              <span class="small text-secondary" *ngIf="data.helpText">(e.g. {{ data.helpText }})</span>
+              <span class="small text-secondary" *ngIf="!data.helpText">(e.g. First row doesn't have a value)</span>
+            </th>
+            <td>
+              <fa-icon [icon]="faLongArrowAltRight"></fa-icon>
+            </td>
+            <td>
+              <select class="custom-select"
+                      (ngModelChange)="data.mappedAutomatically = false"
+                      [class.is-invalid]="data.foundDuplicate"
+                      [(ngModel)]="data.mapField"
+                      (change)="foundDuplicate()">
+                <option [ngValue]="'DONT_MAP_FIELD'">Don't map this field</option>
+                <option [ngValue]="field.field"
+                        *ngFor="let field of projectFields">{{ field.label }}</option>
+              </select>
+            </td>
+            <td>
+              <div class="d-flex align-items-center" *ngIf="data.mappedAutomatically">
+                <!-- Spellcheck icon -->
+                <fa-icon [icon]="faSpellCheck" class="text-primary mr-2"></fa-icon>
+                Automatically mapped to
+                <!-- Badge -->
+                <span class="badge badge-dark ml-2">{{ getProjectFieldLabel(data.mapField) }}</span>
+              </div>
+              <!-- No header mapped -->
+              <div class="d-flex align-items-center" *ngIf="data.mappedAutomatically && !data.name">
+                <!-- Code icon -->
+                <fa-icon [icon]="faBrain" class="text-primary mr-2"></fa-icon>
+                No header. Automatically mapped field via pattern algorithm.
+              </div>
+              <!-- Date validation error -->
+              <div class="d-flex align-items-center message mat-hint"
+                   *ngIf="data.validDates < expensesScanned && data.mapField === 'date'">
+                <!-- Error icon -->
+                <fa-icon [icon]="faShieldAlt" class="text-danger mr-2"></fa-icon>
+                {{ expensesScanned - data.validDates | number }} rows failed validation.
+              </div>
+              <!-- Date validation error -->
+              <div class="d-flex align-items-center message mat-hint"
+                   *ngIf="data.validTimes < expensesScanned && data.mapField === 'time'">
+                {{ expensesScanned }} {{ data.validTimes }}
+                <!-- Error icon -->
+                <fa-icon [icon]="faShieldAlt" class="text-danger mr-2"></fa-icon>
+                {{ expensesScanned - data.validTimes | number }} rows failed validation.
+              </div>
+              <!-- Lack of value error -->
+              <div class="d-flex align-items-center text-warning" *ngIf="data.valuePercentage * 100 !== 100">
+                <!-- Error icon -->
+                <fa-icon [icon]="faExclamationTriangle" class="mr-2"></fa-icon>
+                {{ data.valuePercentage | percent }} of the rows have a value for this column.
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-success mt-3" (click)="build()">BUILD</button>
+      </ng-template>
+    </div>
+  </div>
+</div>
