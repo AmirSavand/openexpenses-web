@@ -47,5 +47,6 @@
   <!-- Invoice - Load the right template -->
   <ng-container *ngIf="invoice" [ngSwitch]="invoice.template">
     <app-template-soft *ngSwitchDefault [invoice]="invoice"></app-template-soft>
+    <app-template-paper *ngSwitchCase="'paper'" [invoice]="invoice"></app-template-paper>
   </ng-container>
 </div>

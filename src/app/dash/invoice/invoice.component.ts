@@ -18,5 +18,10 @@ export class InvoiceComponent {
       version: '1.0',
       authors: ['Amir Savand'],
     },
+    {
+      name: 'Paper',
+      version: '1.0',
+      authors: ['Amer Ansari'],
+    },
   ];
 }

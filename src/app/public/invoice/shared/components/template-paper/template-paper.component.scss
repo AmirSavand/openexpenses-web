@@ -1,0 +1,101 @@
+@import "src/variables";
+
+$bg-color: #fdfdfd;
+$invoice-bg-color: #f0f1f3;
+
+.wrapper {
+  background-color: $invoice-bg-color;
+  padding: 180px;
+}
+
+.container {
+  padding-bottom: 40px;
+  max-width: map_get($grid-breakpoints, lg);
+}
+
+.invoice {
+  padding: 40px;
+  border-radius: 2px;
+  margin-top: -200px;
+  background-color: $bg-color;
+
+  .private {
+    padding: 0 16px;
+    margin-left: 16px;
+    font-weight: bold;
+    border-radius: 100px;
+    background: $invoice-bg-color;
+  }
+
+  .companies-info {
+    display: flex;
+
+    > div {
+      flex: 1;
+    }
+  }
+
+  .invoice-info {
+    display: flex;
+    padding: 30px 40px;
+    background-color: #e5e6e8;
+    margin: 30px -40px 0 -40px;
+
+    > div {
+      flex: 1;
+      text-align: center;
+
+      span {
+        padding: 10px 15px;
+        font-weight: bold;
+        border-radius: 100px;
+        background: $bg-color;
+      }
+
+      &:last-child span {
+        color: #fff;
+        background: $dark;
+      }
+    }
+  }
+
+  p,
+  th {
+    color: rgba($dark, 0.3);
+    font-weight: $font-weight-bold;
+  }
+
+  thead tr {
+    border-bottom: 1px solid rgba($dark, 0.6);
+  }
+
+  td {
+    color: rgba($dark, 0.7);
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .invoice-info {
+    flex-wrap: wrap;
+
+    > div {
+      margin-bottom: 20px;
+      width: 50% !important;
+      flex-basis: 50% !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 1001px) {
+  .wrapper {
+    padding: 0;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .invoice {
+    margin-top: 0;
+  }
+}
